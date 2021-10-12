@@ -1,0 +1,2 @@
+main.o: main.c GBA.h data/Image.h TeamKNOxLib.h
+Image.o: data/Image.c
