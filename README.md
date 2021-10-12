@@ -21,5 +21,7 @@ Reversi for Gameboy Advance
 Usually, developed software is excuted on flash cartridge with GBA itself. However, Flash Cartridge is very expensive. GBA can excute not only Flash Cartridge but also Internal RAM with boot functionarity. It is possible to execute with our developed ULA. 
 
 ### What's BONSAI ?
-Do you know BONSAI ? Nice description is (https://en.wikipedia.org/wiki/Bonsai)[here]. BONSAI realizes a world and universe in a very small pot with limited resource. 
+Do you know BONSAI ? Nice description is [here](https://en.wikipedia.org/wiki/Bonsai). BONSAI realizes a world and universe in a very small pot with limited resource. 
+
+
 
