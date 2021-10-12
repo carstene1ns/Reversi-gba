@@ -24,4 +24,7 @@ Usually, developed software is excuted on flash cartridge with GBA itself. Howev
 Do you know BONSAI ? Nice description is [here](https://en.wikipedia.org/wiki/Bonsai). BONSAI realizes a world and universe in a very small pot with limited resource. 
 
 
+# License
+Copyright (c) Osamu OHASHI  
+Distributed under the MIT License either version 1.0 or any later version. 
 
