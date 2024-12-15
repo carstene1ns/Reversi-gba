@@ -34,13 +34,12 @@ enum ViewStatus
 	KViewGame,
 	KViewGameEnd
 
-} gViewStatus;
+};
 
 #define ISSIKI 0
 
 #define CURSOR_FINGER	1
 #define CURSOR_HOUR_GLASS	0
-
 
 // use off screen
 #define OFF_SCREEN 1
@@ -52,14 +51,7 @@ enum ViewStatus
 	#define OFF_SCREEN_ADDRESS	VRAM_ADDRESS
 #endif
 
-
 #define TRANSPARENT_ON	0
 #define TRANSPARENT_OFF	1
-
-
-#define MULTIBOOT volatile const u8 __gba_multiboot;
-MULTIBOOT
-
-
 
 #endif

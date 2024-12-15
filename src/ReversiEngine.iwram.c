@@ -91,12 +91,12 @@ u16 CheckPosition(u16* brd, u16 aStonePosX, u16 aStonePosY, u16 aMyColor, u16 aW
 									linedColorY = aroundY;
 									while(GetStone(brd, linedColorX, linedColorY) == targetColor){
 										// GetStone(brd, linedColorX, linedColorY) = aMyColor;
-										(u16)*(brd + linedColorY + linedColorX * BOARD_GRID_NUMBER) = aMyColor;
+										*(brd + linedColorY + linedColorX * BOARD_GRID_NUMBER) = aMyColor;
 										linedColorX = linedColorX + dX;
 										linedColorY = linedColorY + dY;
 									}
 									// GetStone(brd, aStonePosX, aStonePosY) = aMyColor;
-									(u16)*(brd + aStonePosY + aStonePosX * BOARD_GRID_NUMBER) = aMyColor;
+									*(brd + aStonePosY + aStonePosX * BOARD_GRID_NUMBER) = aMyColor;
 								}
 								aroundNumber++;
 							}
@@ -167,19 +167,16 @@ void CopyBoard(u16* newbrd, u16* orgbrd)
 	u16 i, j;
 	for(j = 0;j < BOARD_GRID_NUMBER;j++){
 		for(i = 0;i < BOARD_GRID_NUMBER;i++){
-			(u16)*(newbrd + i + j * BOARD_GRID_NUMBER) = (u16)*(orgbrd + i + j * BOARD_GRID_NUMBER);
+			*(newbrd + i + j * BOARD_GRID_NUMBER) = (u16)*(orgbrd + i + j * BOARD_GRID_NUMBER);
 		}
 	}
 }
 
 u16 ReversiEngine(u16 aComColor, u16 aComLevel)
 {
-	u16 x, y, i, j;
+	u16 i, j;
 	struct Evalution eva;
 	u16 myBrd[BOARD_GRID_NUMBER][BOARD_GRID_NUMBER];
-
-	x = 0;
-	y = 0;
 
 	CopyBoard(&(myBrd[0][0]), &(brdBaseInfo[0][0]));
 	if (aComLevel == 0)

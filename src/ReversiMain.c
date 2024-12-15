@@ -1,4 +1,4 @@
-#include "GBA.h"
+#include "gba.h"
 
 #include "TeamKNOx/TeamKNOxLib.h"
 
@@ -14,8 +14,7 @@ u16 gViewNumber;
 u16 gMyColor;
 u16 gGameLevel;
 
-// int main(void)
-u16 AgbMain(void)
+int main(void)
 {
 	gMyColor = 0;
 	gGameLevel = 1;

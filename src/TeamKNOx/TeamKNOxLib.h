@@ -4,7 +4,6 @@
 #define TEAMKNOX_LIB
 
 #include "bkg.c"
-#include "SIO.h"
 
 s8 gWorkStr[8];
 
@@ -409,24 +408,6 @@ u32 random_lc(void)
   return cur_value;
 }
 
-void InitUART(u16 parameter)
-{
-	REG_RCNT = 0; // SIO Enable
-	REG_SIOCNT = 0; // SIO Reset
-	REG_SIOCNT = UART_MODE
-	           | SEND_ENABLE
-	           | RECV_ENABLE
-               | CTS_ENABLE
-	           | DATA_LENGTH_8
-               | parameter;
-}
-
-void SendByte(u8 data)
-{
-	REG_SIODATA8 = data;
-}
-
-
 void Wait(u32 aWaitingTime)
 {
 	while(aWaitingTime--);
@@ -440,7 +421,5 @@ void AWait()
 			break;
 	}
 }
-
-
 
 #endif

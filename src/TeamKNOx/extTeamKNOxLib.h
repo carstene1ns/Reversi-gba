@@ -1,6 +1,6 @@
 // Extern declration
 
-extern s8 gWorkStr[8];
+extern char gWorkStr[8];
 extern void num02str(u8 number);
 extern void num04str(u16 number);
 extern void WaitForVsync(void);
@@ -16,7 +16,7 @@ extern void BitBltExOR(u16 aX, u16 aY, u16 aWidth, u16 aHeight, u16* aImage, u32
 extern void BitBltMasked(u16 aX, u16 aY, u16 aWidth, u16 aHeight, u16* aImage, u16* aMaskImage, u32 aVRAM);
 extern void BitBltMaskedComp(u16 aX, u16 aY, u16 aWidth, u16 aHeight, u16* aImage, u32 aVRAM);
 extern void DrawTextInit();
-extern void DrawText(u16 aX, u16 aY, s8* aStrings, u16 aStringColor, u16 aBGColor, u16 aRectMask, u32 aVRAM);
+extern void DrawText(u16 aX, u16 aY, char* aStrings, u16 aStringColor, u16 aBGColor, u16 aRectMask, u32 aVRAM);
 extern void Off2VRAM(u32 aSourceAddress, u32 aDistAddress);
 extern void DrawBoxEmpty(u16 aX, u16 aY, u16 aWidth, u16 aHeight, u16 aColor, u32 aVRAM);
 extern void seed_lc(u32 v);

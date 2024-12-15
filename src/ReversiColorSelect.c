@@ -1,4 +1,4 @@
-#include "GBA.h"
+#include "gba.h"
 
 #include "TeamKNOx/extTeamKNOxLib.h"
 
