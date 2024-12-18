@@ -42,12 +42,14 @@ void ViewColorSelect() {
 			if(cursorPosY > 0){
 				drawCusorColorSelect(cursorPosY, BG_COLOR);
 				cursorPosY--;
+				PlayNote(NOTE_C, 0);
 			}
 		}
 		if(key_hit(KEY_DOWN)){
 			if(cursorPosY < 1){
 				drawCusorColorSelect(cursorPosY, BG_COLOR);
 				cursorPosY++;
+				PlayNote(NOTE_C, 0);
 			}
 		}
 		if(first || key_hit(KEY_UP|KEY_DOWN)) {
@@ -56,6 +58,7 @@ void ViewColorSelect() {
 		}
 
 		if(key_hit(KEY_RIGHT|KEY_A)){
+			PlayNote(NOTE_A, 1);
 			break;
 		}
 

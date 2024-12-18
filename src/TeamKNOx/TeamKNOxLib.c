@@ -170,3 +170,7 @@ void DrawText(u16 aX, u16 aY, char* aStrings, u16 aStringColor, u16 aBGColor, u1
 		aStrings++;
 	}
 }
+
+void PlayNote(int note, int octave) {
+	REG_SND1FREQ = SFREQ_RESET | SND_RATE(note, octave);
+}

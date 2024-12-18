@@ -243,32 +243,40 @@ void ViewGame() {
 			if(key_hit(KEY_UP)){
 				if(cursorPosY > 0){
 					cursorPosY--;
+					PlayNote(NOTE_C, 0);
 				}
 			}
 			else if(key_hit(KEY_DOWN)){
 				if(cursorPosY < BOARD_GRID_NUMBER - 1){
 					cursorPosY++;
+					PlayNote(NOTE_C, 0);
 				}
 			}
 			if(key_hit(KEY_LEFT)){
 				if(cursorPosX > 0){
 					cursorPosX--;
+					PlayNote(NOTE_C, 0);
 				}
 			}
 			else if(key_hit(KEY_RIGHT)){
 				if(cursorPosX < BOARD_GRID_NUMBER - 1){
 					cursorPosX++;
+					PlayNote(NOTE_C, 0);
 				}
 			}
 			if(key_hit(KEY_A)){
 				if(CheckPosition(&(brdBaseInfo[0][0]), cursorPosX, cursorPosY, myColor, 1)) {
 					put = 1;
+					PlayNote(NOTE_A, 1);
+				} else {
+					PlayNote(NOTE_C, 1);
 				}
 				SetUpStone();
 				SetUpInfo(comLevel);
 			}
 			if(KEY_EQ(key_held, KEY_L | KEY_R)) {
 				gViewNumber = KViewOpening;
+				PlayNote(NOTE_A, 0);
 				stayThisView = 0;
 			}
 			SetUpAStone(cursorPosX, cursorPosY);
@@ -321,6 +329,7 @@ void ViewGame() {
 //				Off2VRAM(OFF_SCREEN_ADDRESS);
 //			#endif
 				key_wait_till_hit(KEY_A);
+				PlayNote(NOTE_A, 1);
 				break;
 			case GAME_STATUS_BLACK_PASS:
 				SetUpCursor(cursorPosX, cursorPosY, CURSOR_HOUR_GLASS);
@@ -331,6 +340,7 @@ void ViewGame() {
 				Off2VRAM(OFF_SCREEN_ADDRESS);
 			#endif
 				key_wait_till_hit(KEY_A);
+				PlayNote(NOTE_A, 1);
 				SetUpBoard();
 				SetUpStone();
 				SetUpInfo(comLevel);
@@ -345,6 +355,7 @@ void ViewGame() {
 				Off2VRAM(OFF_SCREEN_ADDRESS);
 			#endif
 				key_wait_till_hit(KEY_A);
+				PlayNote(NOTE_A, 1);
 				SetUpBoard();
 				SetUpStone();
 				SetUpInfo(comLevel);

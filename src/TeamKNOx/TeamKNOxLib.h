@@ -17,6 +17,8 @@ extern void BitBltMaskedComp(u16 aX, u16 aY, u16 aWidth, u16 aHeight, u16* aImag
 extern void DrawText(u16 aX, u16 aY, char* aStrings, u16 aStringColor, u16 aBGColor, u16 aRectMask, u16* aVRAM);
 extern void DrawBoxEmpty(u16 aX, u16 aY, u16 aWidth, u16 aHeight, u16 aColor, u16* aVRAM);
 
+void PlayNote(int note, int octave);
+
 // tonc compat
 #define VRAM_ADDRESS (u16*)m3_mem
 static inline void Off2VRAM(void* addr) {

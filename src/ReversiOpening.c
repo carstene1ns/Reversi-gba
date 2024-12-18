@@ -20,6 +20,7 @@ void ViewOpening() {
 
 		if(key_hit(KEY_A|KEY_START)){
 			gViewNumber = KViewColorSelect;
+			PlayNote(NOTE_A, 1);
 			return;
 		}
 

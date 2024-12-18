@@ -31,6 +31,14 @@ int main(void) {
 	irq_init(NULL);
 	irq_add(II_VBLANK, NULL);
 
+	// sound
+	REG_SNDSTAT = SSTAT_ENABLE;
+	REG_SNDDMGCNT = SDMG_BUILD_LR(SDMG_SQR1, 7);
+	REG_SNDDSCNT = SDS_DMG100;
+	REG_SND1SWEEP = SSW_OFF;
+	REG_SND1CNT = SSQR_ENV_BUILD(12, 0, 1) | SSQR_DUTY1_2;
+	REG_SND1FREQ = 0;
+
 	gViewNumber = KViewOpening;
 	while(true) {
 		switch (gViewNumber) {

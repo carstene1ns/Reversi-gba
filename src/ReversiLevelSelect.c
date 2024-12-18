@@ -42,12 +42,14 @@ void ViewLevelSelect() {
 			if(cursorPosY > 0){
 				drawCusorLevelSelect(cursorPosY, BG_COLOR);
 				cursorPosY--;
+				PlayNote(NOTE_C, 0);
 			}
 		}
 		else if(key_hit(KEY_DOWN)){
 			if(cursorPosY < 2){
 				drawCusorLevelSelect(cursorPosY, BG_COLOR);
 				cursorPosY++;
+				PlayNote(NOTE_C, 0);
 			}
 		}
 		if(first || key_hit(KEY_UP|KEY_DOWN)) {
@@ -57,10 +59,12 @@ void ViewLevelSelect() {
 
 		if(key_hit(KEY_LEFT|KEY_B)){
 			gViewNumber = KViewColorSelect;
+			PlayNote(NOTE_A, 0);
 			break;
 		}
 		else if(key_hit(KEY_RIGHT|KEY_A)){
 			gViewNumber = KViewGame;
+			PlayNote(NOTE_A, 1);
 			break;
 		}
 
