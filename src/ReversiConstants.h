@@ -43,10 +43,9 @@ enum ViewStatus
 
 // use off screen
 #define OFF_SCREEN 1
-
-
 #if OFF_SCREEN
-	#define OFF_SCREEN_ADDRESS	0x2020000
+	extern u16 *shadow_vram;
+	#define OFF_SCREEN_ADDRESS	shadow_vram
 #else
 	#define OFF_SCREEN_ADDRESS	VRAM_ADDRESS
 #endif

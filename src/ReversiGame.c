@@ -1,6 +1,4 @@
-#include "gba.h"
-
-#include "TeamKNOx/extTeamKNOxLib.h"
+#include "TeamKNOxLib.h"
 
 // Reversi constants
 #include "ReversiConstants.h"
@@ -18,26 +16,17 @@
 #include "bitmaps/HourGlass.c"
 #include "bitmaps/HourGlass_mask.c"
 
-// Defined at ReversiEngine part...
 #include "ReversiEngine.h"
-extern u16 brdBaseInfo[BOARD_GRID_NUMBER][BOARD_GRID_NUMBER];
-extern void InitBaseInfo();
-extern u16 CheckPosition(u16* brd, u16 aStonePosX, u16 aStonePosY, u16 aMyColor, u16 aWithReverse);
-extern u16 GameStatusCheck(u16 aNextColor);
-extern u16 ReversiEngine(u16 aComColor, u16 aComLevel);
 
 extern u16 gViewNumber;
 extern u16 gMyColor;
 extern u16 gGameLevel;
 
-
-void SetUpBoard()
-{
-	BitBltMaskedComp(0, 0, 240, 160, (u16*)gameBoard_Map, OFF_SCREEN_ADDRESS);
+void SetUpBoard() {
+	BitBltMaskedComp(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (u16*)gameBoard_Map, OFF_SCREEN_ADDRESS);
 }
 
-u16 SetUpAStone(u16 aStonePosX, u16 aStonePosY)
-{
+u16 SetUpAStone(u16 aStonePosX, u16 aStonePosY) {
 	u16 positionX, positionY;
 
 	if(aStonePosY == 8){
@@ -70,9 +59,7 @@ u16 SetUpAStone(u16 aStonePosX, u16 aStonePosY)
 	}
 }
 
-
-void SetUpStone()
-{
+void SetUpStone() {
 	u16 i, j;
 
 	for(j = 0;j < BOARD_GRID_NUMBER;j++){
@@ -82,8 +69,7 @@ void SetUpStone()
 	}
 }
 
-void CountUpScore(u8 *arBlackScore, u8 *arWhiteScore)
-{
+void CountUpScore(u8 *arBlackScore, u8 *arWhiteScore) {
 	u16 i, j;
 	u8 blackScore, whiteScore;
 
@@ -112,37 +98,34 @@ void CountUpScore(u8 *arBlackScore, u8 *arWhiteScore)
 	*arWhiteScore = whiteScore;
 }
 
-void SetUpInfo(u8 comLevel)
-{
+void SetUpInfo(u8 comLevel) {
 	u8 blackScore, whiteScore;
 
 	blackScore = whiteScore = 0;
 
 	CountUpScore(&blackScore, &whiteScore);
 
-	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH, BOARD_START_POSITION_Y * 2 + SUB_TITLE_PANE_SIZE_Y, "LEVEL:", RGB(0, 0, 0), BG_COLOR, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
+	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH, BOARD_START_POSITION_Y * 2 + SUB_TITLE_PANE_SIZE_Y, "LEVEL:", RGB15(0, 0, 0), BG_COLOR, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
 	num02str(comLevel + 1);
-	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH + 8 * 6, BOARD_START_POSITION_Y * 2 + SUB_TITLE_PANE_SIZE_Y, gWorkStr, RGB(0, 0, 0), BG_COLOR, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
+	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH + 8 * 6, BOARD_START_POSITION_Y * 2 + SUB_TITLE_PANE_SIZE_Y, gWorkStr, RGB15(0, 0, 0), BG_COLOR, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
 
-	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH, BOARD_START_POSITION_Y * 4 + SUB_TITLE_PANE_SIZE_Y, "BLACK:", RGB(0, 0, 0), BG_COLOR, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
+	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH, BOARD_START_POSITION_Y * 4 + SUB_TITLE_PANE_SIZE_Y, "BLACK:", RGB15(0, 0, 0), BG_COLOR, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
 	num02str(blackScore);
-	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH + 8 * 6, BOARD_START_POSITION_Y * 4 + SUB_TITLE_PANE_SIZE_Y, gWorkStr, RGB(0, 0, 0), BG_COLOR, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
+	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH + 8 * 6, BOARD_START_POSITION_Y * 4 + SUB_TITLE_PANE_SIZE_Y, gWorkStr, RGB15(0, 0, 0), BG_COLOR, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
 
-	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH, BOARD_START_POSITION_Y * 5 + SUB_TITLE_PANE_SIZE_Y, "WHITE:", RGB(0, 0, 10), BG_COLOR, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
+	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH, BOARD_START_POSITION_Y * 5 + SUB_TITLE_PANE_SIZE_Y, "WHITE:", RGB15(0, 0, 10), BG_COLOR, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
 	num02str(whiteScore);
-	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH + 8 * 6, BOARD_START_POSITION_Y * 5 + SUB_TITLE_PANE_SIZE_Y, gWorkStr, RGB(0, 0, 0), BG_COLOR, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
+	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH + 8 * 6, BOARD_START_POSITION_Y * 5 + SUB_TITLE_PANE_SIZE_Y, gWorkStr, RGB15(0, 0, 0), BG_COLOR, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
 }
 
-void SetUpMessage(char* aStrings)
-{
+void SetUpMessage(char* aStrings) {
 	DrawBox(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH - 8, BOARD_START_POSITION_Y * 6 + SUB_TITLE_PANE_SIZE_Y + 2, 80, 10, 0x001f, OFF_SCREEN_ADDRESS);
-	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH - 8, BOARD_START_POSITION_Y * 6 + SUB_TITLE_PANE_SIZE_Y + 3, aStrings, RGB(0, 0, 0), 0x001F, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
+	DrawText(BOARD_START_POSITION_X * 2 + BOARD_GRID_LENGTH - 8, BOARD_START_POSITION_Y * 6 + SUB_TITLE_PANE_SIZE_Y + 3, aStrings, RGB15(0, 0, 0), 0x001F, TRANSPARENT_OFF, OFF_SCREEN_ADDRESS);
 }
 
 u16 gBGSaveData[16][16];
 
-void SetUpCursor(u16 aPositionX, u16 aPositionY, u16 aGameTurn)
-{
+void SetUpCursor(u16 aPositionX, u16 aPositionY, u16 aGameTurn) {
 	u16 positionX, positionY;
 
 	positionX = aPositionX * BOARD_GRID_SIZE + BOARD_START_POSITION_X;
@@ -158,49 +141,37 @@ void SetUpCursor(u16 aPositionX, u16 aPositionY, u16 aGameTurn)
 
 }
 
-void SaveSprite(u16 aPositionX, u16 aPositionY, u32 aVRAM)
-{
+void SaveSprite(u16 aPositionX, u16 aPositionY, u16* aVRAM) {
 	u16 i, j;
 	u16 positionX, positionY;
-	u16* ScreenBuffer;
-
-	positionX = aPositionX * BOARD_GRID_SIZE + BOARD_START_POSITION_X;
-	positionY = aPositionY * BOARD_GRID_SIZE + BOARD_START_POSITION_Y + CURSOR_FIXED_OFFSET;
-
-	ScreenBuffer = (u16*)aVRAM;
-
-	for(j = 0;j < 16;j++){
-		for(i = 0;i < 16;i++){
-			gBGSaveData[i][j] = ScreenBuffer[(positionY + j) * SCREEN_SIZE_X + positionX + i];
-		}
-	}
-
-}
-
-void RestoreSprite(u16 aPositionX, u16 aPositionY, u32 aVRAM)
-{
-	u16 i, j;
-	u16 positionX, positionY;
-	u16* ScreenBuffer;
-
-	ScreenBuffer = (u16*)aVRAM;
 
 	positionX = aPositionX * BOARD_GRID_SIZE + BOARD_START_POSITION_X;
 	positionY = aPositionY * BOARD_GRID_SIZE + BOARD_START_POSITION_Y + CURSOR_FIXED_OFFSET;
 
 	for(j = 0;j < 16;j++){
 		for(i = 0;i < 16;i++){
-			ScreenBuffer[(positionY + j) * SCREEN_SIZE_X + positionX + i] = gBGSaveData[i][j];
+			gBGSaveData[i][j] = aVRAM[(positionY + j) * SCREEN_WIDTH + positionX + i];
 		}
 	}
 
 }
 
+void RestoreSprite(u16 aPositionX, u16 aPositionY, u16* aVRAM) {
+	u16 i, j;
+	u16 positionX, positionY;
 
-u16 ViewGame()
-{
-	u16 keyWk;					// current key data
-	u16 lastKeyWk;				// prevous key data
+	positionX = aPositionX * BOARD_GRID_SIZE + BOARD_START_POSITION_X;
+	positionY = aPositionY * BOARD_GRID_SIZE + BOARD_START_POSITION_Y + CURSOR_FIXED_OFFSET;
+
+	for(j = 0;j < 16;j++){
+		for(i = 0;i < 16;i++){
+			aVRAM[(positionY + j) * SCREEN_WIDTH + positionX + i] = gBGSaveData[i][j];
+		}
+	}
+
+}
+
+void ViewGame() {
 	u16 stayThisView;
 
 	u16 cursorPosX, cursorPosY;
@@ -212,10 +183,8 @@ u16 ViewGame()
 
 	gameResult = GAME_STATUS_NORMAL;
 
-	myColor = ID_STONE_BLACK;
-	comColor = ID_STONE_WHITE;
-	gameTurn = GAME_TURN_WHITE;
-	switch(gMyColor){
+	switch(gMyColor) {
+		default:
 		case 0:
 			myColor = ID_STONE_BLACK;
 			comColor = ID_STONE_WHITE;
@@ -226,22 +195,18 @@ u16 ViewGame()
 			comColor = ID_STONE_BLACK;
 			gameTurn = GAME_TURN_BLACK;
 			break;
-		default:
-			break;
 	}
 
-	comLevel = 1;
-	switch(gGameLevel){
+	switch(gGameLevel) {
 		case 0:
 			comLevel = 2;
 			break;
+		default:
 		case 1:
 			comLevel = 1;
 			break;
 		case 2:
 			comLevel = 0;
-			break;
-		default:
 			break;
 	}
 
@@ -258,50 +223,53 @@ u16 ViewGame()
 	SaveSprite(cursorPosX, cursorPosY, OFF_SCREEN_ADDRESS);
 	SetUpMessage(" Start....");
 
-	lastKeyWk = keyWk = 0;
 	stayThisView = 1;
 
 	gameTurn = 0;
 	put = 0;
-	while(stayThisView)
-	{
-		keyWk = *KEYS;
-		if (gameTurn == myColor - 1)
-		{
+	while(stayThisView) {
+		key_poll();
+
+		if (gameTurn == myColor - 1) {
 			SetUpMessage("Your Turn.");
-			if(!(lastKeyWk ^ keyWk)){
+
+			if(key_released(KEY_FULL)) {
 				continue;
 			}
-			lastKeyWk = keyWk;
 			RestoreSprite(cursorPosX, cursorPosY, OFF_SCREEN_ADDRESS);
 			SetUpAStone(cursorPosX, cursorPosY);
 			SetUpAStone(cursorPosX, cursorPosY + 1);
-			if(!(*KEYS & KEY_UP)){
+
+			if(key_hit(KEY_UP)){
 				if(cursorPosY > 0){
 					cursorPosY--;
 				}
 			}
-			if(!(*KEYS & KEY_DOWN)){
+			else if(key_hit(KEY_DOWN)){
 				if(cursorPosY < BOARD_GRID_NUMBER - 1){
 					cursorPosY++;
 				}
 			}
-			if(!(*KEYS & KEY_LEFT)){
+			if(key_hit(KEY_LEFT)){
 				if(cursorPosX > 0){
 					cursorPosX--;
 				}
 			}
-			if(!(*KEYS & KEY_RIGHT)){
+			else if(key_hit(KEY_RIGHT)){
 				if(cursorPosX < BOARD_GRID_NUMBER - 1){
 					cursorPosX++;
 				}
 			}
-			if(!(*KEYS & KEY_A)){
+			if(key_hit(KEY_A)){
 				if(CheckPosition(&(brdBaseInfo[0][0]), cursorPosX, cursorPosY, myColor, 1)) {
 					put = 1;
 				}
 				SetUpStone();
 				SetUpInfo(comLevel);
+			}
+			if(KEY_EQ(key_held, KEY_L | KEY_R)) {
+				gViewNumber = KViewOpening;
+				stayThisView = 0;
 			}
 			SetUpAStone(cursorPosX, cursorPosY);
 			SaveSprite(cursorPosX, cursorPosY, OFF_SCREEN_ADDRESS);
@@ -313,15 +281,16 @@ u16 ViewGame()
 			SetUpMessage("Thinking..");
 			RestoreSprite(cursorPosX, cursorPosY, OFF_SCREEN_ADDRESS);
 
-			#if OFF_SCREEN
-				Off2VRAM(OFF_SCREEN_ADDRESS, VRAM_ADDRESS);
-			#endif
+		#if OFF_SCREEN
+			Off2VRAM(OFF_SCREEN_ADDRESS);
+		#endif
 
 			ReversiEngine(comColor, comLevel*2);
 			SetUpStone();
 			SetUpInfo(comLevel);
 			put = 1;
 		}
+
 		if (put == 1) {
 			put = 0;
 			gameResult = GameStatusCheck((!gameTurn) + 1);
@@ -337,31 +306,31 @@ u16 ViewGame()
 
 				CountUpScore(&blackScore, &whiteScore);
 				if(blackScore > whiteScore)
-					DrawText(BOARD_START_POSITION_X + BOARD_GRID_SIZE, BOARD_START_POSITION_Y + BOARD_GRID_SIZE * 4, "Black Win !!", RGB(30, 30, 30), 0x7FFF, TRANSPARENT_ON, OFF_SCREEN_ADDRESS);
+					DrawText(BOARD_START_POSITION_X + BOARD_GRID_SIZE, BOARD_START_POSITION_Y + BOARD_GRID_SIZE * 4, "Black Win !!", RGB15(30, 30, 30), 0x7FFF, TRANSPARENT_ON, OFF_SCREEN_ADDRESS);
 				if(blackScore < whiteScore)
-					DrawText(BOARD_START_POSITION_X + BOARD_GRID_SIZE, BOARD_START_POSITION_Y + BOARD_GRID_SIZE * 4, "White Win !!", RGB(30, 30, 30), 0x7FFF, TRANSPARENT_ON, OFF_SCREEN_ADDRESS);
+					DrawText(BOARD_START_POSITION_X + BOARD_GRID_SIZE, BOARD_START_POSITION_Y + BOARD_GRID_SIZE * 4, "White Win !!", RGB15(30, 30, 30), 0x7FFF, TRANSPARENT_ON, OFF_SCREEN_ADDRESS);
 				if(blackScore == whiteScore)
-					DrawText(BOARD_START_POSITION_X + BOARD_GRID_SIZE * 2, BOARD_START_POSITION_Y + BOARD_GRID_SIZE * 4, "Draw !!", RGB(30, 30, 30), 0x7FFF, TRANSPARENT_ON, OFF_SCREEN_ADDRESS);
+					DrawText(BOARD_START_POSITION_X + BOARD_GRID_SIZE * 2, BOARD_START_POSITION_Y + BOARD_GRID_SIZE * 4, "Draw !!", RGB15(30, 30, 30), 0x7FFF, TRANSPARENT_ON, OFF_SCREEN_ADDRESS);
 			#if OFF_SCREEN
-				Off2VRAM(OFF_SCREEN_ADDRESS, VRAM_ADDRESS);
+				Off2VRAM(OFF_SCREEN_ADDRESS);
 			#endif
 
 				gViewNumber = KViewOpening;
 				stayThisView = 0;
 //			#if OFF_SCREEN
-//				Off2VRAM(OFF_SCREEN_ADDRESS, VRAM_ADDRESS);
+//				Off2VRAM(OFF_SCREEN_ADDRESS);
 //			#endif
-				AWait();
+				key_wait_till_hit(KEY_A);
 				break;
 			case GAME_STATUS_BLACK_PASS:
 				SetUpCursor(cursorPosX, cursorPosY, CURSOR_HOUR_GLASS);
 				SetUpMessage("Black Pass");
 				DrawBoxHalf(BOARD_START_POSITION_X / 2, BOARD_START_POSITION_Y + BOARD_GRID_SIZE * 3, BOARD_START_POSITION_X + BOARD_GRID_SIZE * 8, BOARD_GRID_SIZE * 2, OFF_SCREEN_ADDRESS);
-				DrawText(BOARD_START_POSITION_X + BOARD_GRID_SIZE * 2, BOARD_START_POSITION_Y + BOARD_GRID_SIZE * 4, "Black Pass", RGB(30, 30, 30), 0x7FFF, TRANSPARENT_ON, OFF_SCREEN_ADDRESS);
+				DrawText(BOARD_START_POSITION_X + BOARD_GRID_SIZE * 2, BOARD_START_POSITION_Y + BOARD_GRID_SIZE * 4, "Black Pass", RGB15(30, 30, 30), 0x7FFF, TRANSPARENT_ON, OFF_SCREEN_ADDRESS);
 			#if OFF_SCREEN
-				Off2VRAM(OFF_SCREEN_ADDRESS, VRAM_ADDRESS);
+				Off2VRAM(OFF_SCREEN_ADDRESS);
 			#endif
-				AWait();
+				key_wait_till_hit(KEY_A);
 				SetUpBoard();
 				SetUpStone();
 				SetUpInfo(comLevel);
@@ -371,11 +340,11 @@ u16 ViewGame()
 				SetUpCursor(cursorPosX, cursorPosY, CURSOR_HOUR_GLASS);
 				SetUpMessage("White Pass");
 				DrawBoxHalf(BOARD_START_POSITION_X / 2, BOARD_START_POSITION_Y + BOARD_GRID_SIZE * 3, BOARD_START_POSITION_X + BOARD_GRID_SIZE * 8, BOARD_GRID_SIZE * 2, OFF_SCREEN_ADDRESS);
-				DrawText(BOARD_START_POSITION_X + BOARD_GRID_SIZE * 2, BOARD_START_POSITION_Y + BOARD_GRID_SIZE * 4, "White Pass", RGB(30, 30, 30), 0x7FFF, TRANSPARENT_ON, OFF_SCREEN_ADDRESS);
+				DrawText(BOARD_START_POSITION_X + BOARD_GRID_SIZE * 2, BOARD_START_POSITION_Y + BOARD_GRID_SIZE * 4, "White Pass", RGB15(30, 30, 30), 0x7FFF, TRANSPARENT_ON, OFF_SCREEN_ADDRESS);
 			#if OFF_SCREEN
-				Off2VRAM(OFF_SCREEN_ADDRESS, VRAM_ADDRESS);
+				Off2VRAM(OFF_SCREEN_ADDRESS);
 			#endif
-				AWait();
+				key_wait_till_hit(KEY_A);
 				SetUpBoard();
 				SetUpStone();
 				SetUpInfo(comLevel);
@@ -386,14 +355,12 @@ u16 ViewGame()
 			}
 		}
 
-		#if OFF_SCREEN
-			Off2VRAM(OFF_SCREEN_ADDRESS, VRAM_ADDRESS);
-		#endif
+	#if OFF_SCREEN
+		Off2VRAM(OFF_SCREEN_ADDRESS);
+	#endif
 
-		WaitForVsync(); // Wait VBL
+		VBlankIntrWait();
 	}
-
-	return 0;
 }
 
 // EOF

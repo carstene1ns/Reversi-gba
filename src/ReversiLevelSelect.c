@@ -1,6 +1,4 @@
-#include "gba.h"
-
-#include "TeamKNOx/extTeamKNOxLib.h"
+#include "TeamKNOxLib.h"
 
 // Reversi constants
 #include "ReversiConstants.h"
@@ -19,9 +17,7 @@ extern u16 gGameLevel;
 #define LEVEL_SELECT_CURSOR_HEIGHT	24
 #define LEVEL_SELECT_CURSOR_COLOR	0x7C00
 
-void drawCusorLevelSelect(u16 aCursorPosition, u16 aColor)
-{
-
+void drawCusorLevelSelect(u16 aCursorPosition, u16 aColor) {
 	DrawBoxEmpty(LEVEL_SELECT_CURSOR_POS_X,
 		 aCursorPosition * LEVEL_SELECT_CURSOR_STEP + LEVEL_SELECT_CURSOR_OFFSET,
 		 LEVEL_SELECT_CURSOR_WIDTH,
@@ -30,66 +26,48 @@ void drawCusorLevelSelect(u16 aCursorPosition, u16 aColor)
 		 VRAM_ADDRESS);
 }
 
-u16 ViewLevelSelect()
-{
-	u16 keyWk;					// current key data
-	u16 lastKeyWk;				// prevous key data
-	u16 stayThisView;
-	u16 cursorPosY;
-
-	BitBltMaskedComp(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y, (u16*)LevelSelection_Map, OFF_SCREEN_ADDRESS);
-
-#ifdef OFF_SCREEN
-	Off2VRAM(OFF_SCREEN_ADDRESS, VRAM_ADDRESS);
+void ViewLevelSelect() {
+	BitBltMaskedComp(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (u16*)LevelSelection_Map, OFF_SCREEN_ADDRESS);
+#if OFF_SCREEN
+	Off2VRAM(OFF_SCREEN_ADDRESS);
 #endif
 
-	cursorPosY = gGameLevel;
+	u16 cursorPosY = gGameLevel;
+	bool first = true;
 
-	lastKeyWk = keyWk = 0;
-	stayThisView = 1;
-	while(stayThisView){
+	while(true) {
+		key_poll();
 
-		keyWk = *KEYS;
-
-		if(lastKeyWk ^ keyWk){
-			if(!(*KEYS & KEY_UP)){
-				if(cursorPosY > 0){
-					drawCusorLevelSelect(cursorPosY, BG_COLOR);
-					cursorPosY--;
-				}
+		if(key_hit(KEY_UP)){
+			if(cursorPosY > 0){
+				drawCusorLevelSelect(cursorPosY, BG_COLOR);
+				cursorPosY--;
 			}
-			if(!(*KEYS & KEY_DOWN)){
-				if(cursorPosY < 2){
-					drawCusorLevelSelect(cursorPosY, BG_COLOR);
-					cursorPosY++;
-				}
+		}
+		else if(key_hit(KEY_DOWN)){
+			if(cursorPosY < 2){
+				drawCusorLevelSelect(cursorPosY, BG_COLOR);
+				cursorPosY++;
 			}
-			if(!(*KEYS & KEY_LEFT)){
-				gViewNumber = KViewColorSelect;
-				stayThisView = 0;
-			}
-			if(!(*KEYS & KEY_RIGHT)){
-				gViewNumber = KViewGame;
-				stayThisView = 0;
-			}
-			if(!(*KEYS & KEY_A)){
-				gViewNumber = KViewGame;
-				stayThisView = 0;
-			}
-			if(!(*KEYS & KEY_B)){
-				gViewNumber = KViewColorSelect;
-				stayThisView = 0;
-			}
+		}
+		if(first || key_hit(KEY_UP|KEY_DOWN)) {
 			drawCusorLevelSelect(cursorPosY, LEVEL_SELECT_CURSOR_COLOR);
+			first = false;
 		}
 
-		lastKeyWk = keyWk;
-		WaitForVsync(); // Wait VBL
+		if(key_hit(KEY_LEFT|KEY_B)){
+			gViewNumber = KViewColorSelect;
+			break;
+		}
+		else if(key_hit(KEY_RIGHT|KEY_A)){
+			gViewNumber = KViewGame;
+			break;
+		}
 
+		VBlankIntrWait();
 	}
-	gGameLevel = cursorPosY;
 
-	return 0;
+	gGameLevel = cursorPosY;
 }
 
 // EOF

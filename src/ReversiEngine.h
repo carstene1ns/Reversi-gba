@@ -17,5 +17,10 @@
 #define GAME_TURN_WHITE	1
 #define GAME_TURN_BLACK	0
 
-#endif
+extern u16 brdBaseInfo[BOARD_GRID_NUMBER][BOARD_GRID_NUMBER];
+extern void InitBaseInfo();
+extern u16 CheckPosition(u16* brd, u16 aStonePosX, u16 aStonePosY, u16 aMyColor, u16 aWithReverse);
+extern u16 GameStatusCheck(u16 aNextColor);
+extern u16 ReversiEngine(u16 aComColor, u16 aComLevel);
 
+#endif

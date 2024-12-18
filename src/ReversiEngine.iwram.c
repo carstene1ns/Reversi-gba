@@ -1,4 +1,4 @@
-#include "gba.h"
+#include <tonc.h>
 
 // ReversiAdvance Engine part
 #include "ReversiConstants.h"

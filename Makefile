@@ -23,8 +23,8 @@ include $(DEVKITARM)/gba_rules
 GAME_TITLE  := "GBA Reversi"
 TARGET		:= ReversiAdv_mb
 BUILD		:= build
-SOURCES		:= src
-INCLUDES	:= src/lib src/TeamKNOx .
+SOURCES		:= src src/TeamKNOx
+INCLUDES	:= src/generated src/TeamKNOx
 DATA		:=
 MUSIC		:=
 
@@ -47,14 +47,14 @@ LDFLAGS	=	-g $(ARCH) -Wl,-Map,$(notdir $*.map)
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:= 
+LIBS	:= -ltonc
 
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= 
+LIBDIRS	:= $(DEVKITPRO)/libtonc
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional

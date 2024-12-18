@@ -1,34 +1,39 @@
-#include "gba.h"
-
-#include "TeamKNOx/TeamKNOxLib.h"
+#include <stdlib.h>
+#include "TeamKNOxLib.h"
 
 // Reversi constants
 #include "ReversiConstants.h"
 
-extern u16 ViewOpening();
-extern u16 ViewColorSelect();
-extern u16 ViewLevelSelect();
-extern u16 ViewGame();
+extern void ViewOpening();
+extern void ViewColorSelect();
+extern void ViewLevelSelect();
+extern void ViewGame();
 
 u16 gViewNumber;
 u16 gMyColor;
 u16 gGameLevel;
 
-int main(void)
-{
+#if OFF_SCREEN
+u16 *shadow_vram;
+#endif
+
+int main(void) {
+#if OFF_SCREEN
+	shadow_vram = malloc(M3_WIDTH*M3_HEIGHT);
+#endif
+
 	gMyColor = 0;
 	gGameLevel = 1;
 
-	SetMode( MODE_3 | BG2_ENABLE ); // Set MODE3
+	// gfx
+	REG_DISPCNT = DCNT_MODE3 | DCNT_BG2;
+
+	irq_init(NULL);
+	irq_add(II_VBLANK, NULL);
 
 	gViewNumber = KViewOpening;
-	ViewOpening();
-
-	gViewNumber = KViewColorSelect;
-	while(1){
-		switch (gViewNumber){
-			case KViewOpening:
-				ViewOpening();
+	while(true) {
+		switch (gViewNumber) {
 			case KViewColorSelect:
 				ViewColorSelect();
 				break;
@@ -39,14 +44,18 @@ int main(void)
 				ViewGame();
 				break;
 
+			case KViewOpening:
 			default:
 				ViewOpening();
 				break;
 		}
 
 	}
-	return 0;
+#if OFF_SCREEN
+	free(shadow_vram);
+#endif
 
+	return 0;
 }
 
 // EOF
